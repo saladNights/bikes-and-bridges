@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Upload: any;
 };
 
 export type LoginResponse = {
@@ -22,6 +23,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: Scalars['Boolean'];
   login: LoginResponse;
+  uploadRoute: Scalars['Boolean'];
 };
 
 
@@ -36,11 +38,24 @@ export type MutationLoginArgs = {
   email: Scalars['String'];
 };
 
+
+export type MutationUploadRouteArgs = {
+  route: Scalars['Upload'];
+};
+
 export type Query = {
    __typename?: 'Query';
   users: Array<User>;
   user?: Maybe<User>;
 };
+
+export type Routes = {
+   __typename?: 'Routes';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+};
+
 
 export type User = {
    __typename?: 'User';
@@ -83,6 +98,16 @@ export type RegisterMutationVariables = {
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'register'>
+);
+
+export type UploadRouteMutationVariables = {
+  route: Scalars['Upload'];
+};
+
+
+export type UploadRouteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'uploadRoute'>
 );
 
 export type UserQueryVariables = {};
@@ -205,6 +230,36 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UploadRouteDocument = gql`
+    mutation UploadRoute($route: Upload!) {
+  uploadRoute(route: $route)
+}
+    `;
+export type UploadRouteMutationFn = ApolloReactCommon.MutationFunction<UploadRouteMutation, UploadRouteMutationVariables>;
+
+/**
+ * __useUploadRouteMutation__
+ *
+ * To run a mutation, you first call `useUploadRouteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadRouteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadRouteMutation, { data, loading, error }] = useUploadRouteMutation({
+ *   variables: {
+ *      route: // value for 'route'
+ *   },
+ * });
+ */
+export function useUploadRouteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UploadRouteMutation, UploadRouteMutationVariables>) {
+        return ApolloReactHooks.useMutation<UploadRouteMutation, UploadRouteMutationVariables>(UploadRouteDocument, baseOptions);
+      }
+export type UploadRouteMutationHookResult = ReturnType<typeof useUploadRouteMutation>;
+export type UploadRouteMutationResult = ApolloReactCommon.MutationResult<UploadRouteMutation>;
+export type UploadRouteMutationOptions = ApolloReactCommon.BaseMutationOptions<UploadRouteMutation, UploadRouteMutationVariables>;
 export const UserDocument = gql`
     query User {
   user {

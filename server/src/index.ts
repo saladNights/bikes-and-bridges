@@ -1,9 +1,11 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import express from 'express';
+import path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './UserResolver';
+import { RouteResolver } from './RouteResolver';
 import { createConnection } from 'typeorm';
 import cookieParser from 'cookie-parser';
 import { verify } from 'jsonwebtoken';
@@ -22,6 +24,7 @@ import { sendRefreshToken } from './sendRefreshToken';
 	  })
   );
   app.use(cookieParser());
+  app.use('/routes', express.static(path.join(__dirname, '../../routes')));
 
   app.post('/refresh_token', async (req, res) => {
 	  const token = req.cookies.jid;
@@ -57,7 +60,10 @@ import { sendRefreshToken } from './sendRefreshToken';
 
   const apolloServer = new ApolloServer({
 	  schema: await buildSchema({
-		  resolvers: [UserResolver]
+		  resolvers: [
+		  	UserResolver,
+			  RouteResolver
+		  ],
 	  }),
 	  context: ({ req, res }) => ({ req, res })
   });

@@ -3,10 +3,14 @@ import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @ObjectType()
 @Entity('routes')
-export class Routes extends BaseEntity {
+export class Route extends BaseEntity {
 	@Field(() => String)
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
+
+	@Field()
+	@Column('text')
+	userId: string;
 
 	@Field()
 	@Column('text')
@@ -14,5 +18,5 @@ export class Routes extends BaseEntity {
 
 	@Field()
 	@Column('text')
-	description: string;
+	location: string;
 }

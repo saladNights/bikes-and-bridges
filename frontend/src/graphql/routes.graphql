@@ -1,0 +1,8 @@
+query Routes($userId: String!) {
+  getRoutes(userId: $userId) {
+    id
+    title
+    location
+    userId
+  }
+}

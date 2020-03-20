@@ -47,19 +47,26 @@ export type Query = {
    __typename?: 'Query';
   users: Array<User>;
   user?: Maybe<User>;
+  getRoutes: Array<Route>;
 };
 
-export type Routes = {
-   __typename?: 'Routes';
+
+export type QueryGetRoutesArgs = {
+  userId: Scalars['String'];
+};
+
+export type Route = {
+   __typename?: 'Route';
   id: Scalars['String'];
+  userId: Scalars['String'];
   title: Scalars['String'];
-  description: Scalars['String'];
+  location: Scalars['String'];
 };
 
 
 export type User = {
    __typename?: 'User';
-  id: Scalars['Int'];
+  id: Scalars['String'];
   email: Scalars['String'];
 };
 
@@ -98,6 +105,19 @@ export type RegisterMutationVariables = {
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'register'>
+);
+
+export type RoutesQueryVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type RoutesQuery = (
+  { __typename?: 'Query' }
+  & { getRoutes: Array<(
+    { __typename?: 'Route' }
+    & Pick<Route, 'id' | 'title' | 'location' | 'userId'>
+  )> }
 );
 
 export type UploadRouteMutationVariables = {
@@ -230,6 +250,42 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RoutesDocument = gql`
+    query Routes($userId: String!) {
+  getRoutes(userId: $userId) {
+    id
+    title
+    location
+    userId
+  }
+}
+    `;
+
+/**
+ * __useRoutesQuery__
+ *
+ * To run a query within a React component, call `useRoutesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoutesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoutesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useRoutesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RoutesQuery, RoutesQueryVariables>) {
+        return ApolloReactHooks.useQuery<RoutesQuery, RoutesQueryVariables>(RoutesDocument, baseOptions);
+      }
+export function useRoutesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RoutesQuery, RoutesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<RoutesQuery, RoutesQueryVariables>(RoutesDocument, baseOptions);
+        }
+export type RoutesQueryHookResult = ReturnType<typeof useRoutesQuery>;
+export type RoutesLazyQueryHookResult = ReturnType<typeof useRoutesLazyQuery>;
+export type RoutesQueryResult = ApolloReactCommon.QueryResult<RoutesQuery, RoutesQueryVariables>;
 export const UploadRouteDocument = gql`
     mutation UploadRoute($route: Upload!) {
   uploadRoute(route: $route)

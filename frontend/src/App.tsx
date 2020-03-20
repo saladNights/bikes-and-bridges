@@ -46,7 +46,7 @@ const App: React.FC = () => {
       <div
         {...getRootProps()}
         style={{
-          width: '200px',
+          width: 400,
           border: '1px solid #000',
           padding: '1em',
           margin: '1em'

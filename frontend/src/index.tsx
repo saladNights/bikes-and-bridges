@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink, Observable } from 'apollo-link';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
@@ -14,7 +13,6 @@ import App from './App';
 import {getAccessToken, setAccessToken} from './accessToken';
 
 const cache = new InMemoryCache({});
-const uploadLink = createUploadLink({ uri: 'http://localhost:4000/graphql' });
 const requestLink = new ApolloLink((operation, forward) =>
 	new Observable(observer => {
 		let handle: any;
@@ -78,16 +76,15 @@ const tokenRefreshLink = new TokenRefreshLink({
 
 const client = new ApolloClient({
 	link: ApolloLink.from([
-		uploadLink,
 		tokenRefreshLink,
 		requestLink,
 		onError(({ graphQLErrors, networkError }) => {
 			console.error({ graphQLErrors, networkError });
 		}),
-		new HttpLink({
+		createUploadLink({
 			uri: 'http://localhost:4000/graphql',
-			credentials: 'include'
-		})
+			credentials: 'include',
+		}),
 	]),
 	cache
 });
